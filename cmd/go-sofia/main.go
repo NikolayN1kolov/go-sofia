@@ -6,7 +6,8 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	
+	"github.com/NikolayN1kolov/go-sofia/internal/diagnostics"
+
 )
 
 func main() {

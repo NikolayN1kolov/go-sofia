@@ -6,7 +6,7 @@ import(
 	"fmt"
 )
 
-func newDiagnostics() *mux.Router{
+func NewDiagnostics() *mux.Router{
 	router := mux.NewRouter()
 	router.HandleFunc("/healthz", healthz)
 	router.HandleFunc("/info", ready)
