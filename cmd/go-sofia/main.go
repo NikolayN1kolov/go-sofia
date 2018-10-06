@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"fmt"
 	"log"
 	"net/http"
@@ -11,25 +12,41 @@ import (
 )
 
 func main() {
-	log.Print("Hello, World")
+	log.Print("Starting the application...")
+
+	blport := os.Getenv("PORT")
+	if len(blport) == 0{
+		log.Fatal("The application port should be set")
+	}
+	diagnosticsPort := os.Getenv("DIAG_PORT")
+	if len(diagnosticsPort) == 0{
+		log.Fatal("The diagnostics port should be set")
+	}
 
 	router := mux.NewRouter()
 	router.HandleFunc("/", hello)
 
 	go func() {
-		err := http.ListenAndServe(":8080", nil)
+		log.Print("The applicaiton server is preaparing to handle connections..")
+		server := http.Server{
+			Addr: ":"+ blport,
+			Handler: router,
+		}
+		err := server.ListenAndServe()
 		if err != nil {
 			log.Fatal(err)
 		}
 	}()
 
+	log.Print("The diagnostics server is preaparing to handle connections..")
     diagnostics := diagnostics.NewDiagnostics()
-	err := http.ListenAndServe(":8585", diagnostics)
+	err := http.ListenAndServe(":"+ diagnosticsPort, diagnostics)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
 func hello(w http.ResponseWriter, r *http.Request) {
+	log.Print("The hello handler was called")
 	fmt.Fprint(w, http.StatusText(http.StatusOK))
 }
