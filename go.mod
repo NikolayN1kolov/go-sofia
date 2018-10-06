@@ -1,4 +1,4 @@
-module github.com/NikolayN1kolov/go-sofia
+module github.com/nikolayn1kolov/go-sofia
 
 require (
 	github.com/gorilla/context v1.1.1 // indirect
